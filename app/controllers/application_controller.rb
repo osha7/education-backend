@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+    # skip_before_action :verify_authenticity_token
+    skip_forgery_protection
     before_action :require_login
     skip_before_action :require_login, only: [:home]
 
@@ -19,7 +21,7 @@ class ApplicationController < ActionController::Base
             token = auth_header.split(' ')[1]
             begin
                 JWT.decode(token, 'my_secret', true, algorithm: 'HS256')
-            rescue JWT:DecodeError
+            rescue JWT::DecodeError
                 []
             end
         end
